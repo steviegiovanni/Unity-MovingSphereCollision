@@ -18,18 +18,33 @@ public class MovingSphere : MonoBehaviour {
 	}
 
 	private void OnDrawGizmos(){
+		// draw scope
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawLine (transform.position + transform.right * Radius, transform.position + transform.right * Radius + transform.forward * 100.0f);
 		Gizmos.DrawLine (transform.position - transform.right * Radius, transform.position - transform.right * Radius + transform.forward * 100.0f);
 		Gizmos.DrawLine (transform.position + transform.up * Radius, transform.position + transform.up * Radius + transform.forward * 100.0f);
 		Gizmos.DrawLine (transform.position - transform.up * Radius, transform.position - transform.up * Radius + transform.forward * 100.0f);
 
+		// draw arrow
+		Gizmos.color = Color.cyan;
+		Gizmos.DrawLine (transform.position + transform.forward * 3.0f * Radius, transform.position + transform.forward * 2.0f * Radius + transform.right * Radius * 0.75f);
+		Gizmos.DrawLine (transform.position + transform.forward * 3.0f * Radius, transform.position + transform.forward * 2.0f * Radius + transform.up * Radius * 0.75f);
+		Gizmos.DrawLine (transform.position + transform.forward * 3.0f * Radius, transform.position + transform.forward * 2.0f * Radius - transform.right * Radius * 0.75f);
+		Gizmos.DrawLine (transform.position + transform.forward * 3.0f * Radius, transform.position + transform.forward * 2.0f * Radius - transform.up * Radius * 0.75f);
+
 		if(staticSphere != null){
 			Vector3 posAtImpact = Vector3.zero;
 			Vector3 collisionPoint = Vector3.zero;
 			if (CalculateCollisionPoint (this.transform.position,staticSphere.transform.position,Radius,staticSphere.transform.localScale.x/2,transform.forward,out posAtImpact,out collisionPoint)) {
+				// draw path
+				Gizmos.color = new Color (0,1,0,0.5f);
+				Gizmos.DrawLine (transform.position, posAtImpact);
+
+				// draw sphere
 				Gizmos.color = new Color (0,1,0,0.5f);
 				Gizmos.DrawSphere (posAtImpact, Radius);
+
+				// draw collision
 				Gizmos.color = Color.red;
 				Gizmos.DrawLine(collisionPoint + Vector3.up, collisionPoint + Vector3.down);
 				Gizmos.DrawLine(collisionPoint + Vector3.right, collisionPoint + Vector3.left);
